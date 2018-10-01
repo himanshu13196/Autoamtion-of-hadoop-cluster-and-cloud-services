@@ -1,0 +1,20 @@
+---
+- hosts: local
+  vars_prompt:
+  - name: x
+    prompt: "enter the name of your container"
+    private: false
+
+
+  - name: y
+    prompt: "enter the ip of your container"
+    private: false
+
+
+  - name: z
+    prompt: "enter the soft that you want to use"
+    private: false
+
+
+  tasks:
+  - shell: "docker run -dit -v /tmp/.X11-unix/:/tmp/.X11-unix/ -e DISPLAY={{y}}:0.0 --name {{x}} paasfinal:v1 {{z}}"

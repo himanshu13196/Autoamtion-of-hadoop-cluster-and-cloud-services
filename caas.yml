@@ -1,0 +1,25 @@
+---
+- hosts: local
+  vars_prompt:
+  - name: x
+    prompt: "enter the name of your container"
+    private: false
+
+
+  tasks:
+  - name: install docker py
+    pip:
+     name: docker-py
+
+  - name: install docker_container
+    docker_container:
+     name: "{{ x }}"
+     image: shell:v4
+     state: started
+     tty: true
+     interactive: true
+     privileged: true
+     exposed_ports: 4200
+     detach: yes
+     ports:
+      - "1234:4200"

@@ -1,0 +1,59 @@
+- hosts: data
+#  vars:
+#   ip: "{{ansible_default_ipv4.address}}"
+  tasks:
+  - name: "copying the jdk"      #copying the jdk to the system
+    copy:
+       src: /root/jdk-8u171-linux-x64.rpm 
+       dest: /root
+    ignore_errors: true
+
+  - name: "copying the hadoop rpm"
+    copy:
+       src: /root/hadoop-1.2.1-1.x86_64.rpm
+       dest: /root
+    ignore_errors: true
+
+
+  - name: "installing the jdk"
+    command: "rpm -ivh /root/jdk-8u171-linux-x64.rpm"
+    ignore_errors: true
+
+      
+  - name: "installing the haddop.."
+    command: "rpm -ivh /root/hadoop-1.2.1-1.x86_64.rpm --replacefiles"
+    ignore_errors: true
+  - name: "setting the jdk variable"
+
+    copy:
+       src: /root/Desktop/down/.bashrc
+       dest: /root/.bashrc
+    ignore_errors: true
+
+
+
+
+  - name: "editing the core-site.xml"
+    copy:
+       src: /root/Desktop/down/core-site.xml
+       dest: /etc/hadoop/core-site.xml
+    ignore_errors: true
+
+  - name: "editing the hdfs-site.xml"
+    copy:
+       src: /root/Desktop/up/hdfs-site.xml
+       dest: /etc/hadoop/hdfs-site.xml
+    ignore_errors: true
+  
+
+
+
+
+  - name: "starting the hadoop daemon"
+    shell: "hadoop-daemon.sh start datanode"
+    ignore_errors: true
+
+
+
+  - name: "iptables -F"
+    shell: "iptables -F"
